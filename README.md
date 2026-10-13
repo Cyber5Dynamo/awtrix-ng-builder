@@ -1,6 +1,18 @@
 # AWTRIX NG Builder
 
-Payload-Builder und **AWTRIX-3 → AWTRIX-NG-Migrator** als Home-Assistant-Integration mit eigenem Eintrag in der Seitenleiste. Läuft zusätzlich als einzelne HTML-Datei ohne Home Assistant.
+Ein Baukasten für alle, die ihr **Ulanzi-Display mit AWTRIX NG** nutzen und Nachrichten anzeigen lassen wollen – **ohne Programmierkenntnisse**.
+
+Du klickst dir deine Anzeige zusammen (Text, Farben, Icon, Effekte, Scrollen, Fortschrittsbalken, Sound …), siehst sofort eine Vorschau und kopierst am Ende den **fertigen YAML-Code** per Klick in deine Home-Assistant-Automation oder dein Skript. Mehr ist nicht nötig.
+
+Das Ganze ist eine Home-Assistant-Integration mit eigenem Eintrag in der Seitenleiste und läuft zusätzlich als einzelne HTML-Datei ohne Home Assistant. Wer noch Payloads aus AWTRIX 3 hat, kann sie mit dem integrierten **Migrator** automatisch auf AWTRIX NG umschreiben lassen.
+
+## So einfach geht's
+
+1. **Zusammenklicken:** Text eingeben, Farbe, Icon, Effekte und Scroll-Verhalten wählen – die Vorschau zeigt sofort, wie es aussieht.
+2. **Kopieren:** Reiter **„YAML (HA)“** öffnen und unten auf **„📋 YAML“** klicken – der Code liegt jetzt in der Zwischenablage.
+3. **Einfügen:** Den Code in eine Automation oder ein Skript einfügen, zum Beispiel unter `actions:` – fertig.
+
+Du willst nur kurz testen? Mit **„Senden“** geht die Anzeige direkt aufs Display, ganz ohne YAML.
 
 ## Funktionen
 
