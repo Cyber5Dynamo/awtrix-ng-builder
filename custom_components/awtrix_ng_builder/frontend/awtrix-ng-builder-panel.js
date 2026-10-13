@@ -47,10 +47,10 @@ class AwtrixNgBuilderPanel extends HTMLElement {
   _build() {
     if (!this.isConnected) return;
     if (!this._frame) {
-      this.style.display = 'flex';
-      this.style.flexDirection = 'column';
-      this.style.height = '100%';
-      this.style.background = 'var(--primary-background-color, #0c0e14)';
+      // Feste Viewport-Höhe: HA gibt Custom-Panels keine Höhe vor, sonst fällt das iframe auf ~150px zurück
+      this.style.cssText = 'display:flex;flex-direction:column;width:100%;box-sizing:border-box;' +
+        'height:100vh;height:100dvh;min-height:400px;overflow:hidden;' +
+        'background:var(--primary-background-color,#0c0e14)';
 
       this._bar = document.createElement('div');
       this._bar.style.cssText = 'display:none;align-items:center;gap:8px;height:56px;padding:0 8px;' +
@@ -65,7 +65,7 @@ class AwtrixNgBuilderPanel extends HTMLElement {
       this._bar.style.display = this._narrow ? 'flex' : 'none';
 
       this._frame = document.createElement('iframe');
-      this._frame.style.cssText = 'flex:1;width:100%;border:0;display:block;min-height:0';
+      this._frame.style.cssText = 'flex:1 1 auto;width:100%;height:100%;border:0;display:block;min-height:0';
       this._frame.setAttribute('allow', 'clipboard-write');
       this.append(this._bar, this._frame);
     }
