@@ -1,0 +1,30 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "AWTRIX NG Builder",
+        "description": "Fügt einen Payload-Builder und AWTRIX-3-Migrator als Eintrag in der Seitenleiste hinzu.",
+        "data": {
+          "sidebar_title": "Name in der Seitenleiste",
+          "mqtt_prefix": "MQTT-Topic-Präfix des Displays",
+          "display_ip": "Display-IP (optional, für direktes Senden per HTTP)"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Es ist nur eine Instanz erlaubt."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "AWTRIX NG Builder",
+        "data": {
+          "sidebar_title": "Name in der Seitenleiste",
+          "mqtt_prefix": "MQTT-Topic-Präfix des Displays",
+          "display_ip": "Display-IP (optional, für direktes Senden per HTTP)"
+        }
+      }
+    }
+  }
+}
