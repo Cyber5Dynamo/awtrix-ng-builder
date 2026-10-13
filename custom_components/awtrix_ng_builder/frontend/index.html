@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AWTRIX NG · Payload Builder</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+<header>
+  <span class="logo">AWTRIX <em>NG</em></span>
+  <div class="mode-pill">
+    <button data-k="mode" data-v="notify">Notification</button>
+    <button data-k="mode" data-v="app">Pushed App</button>
+  </div>
+  <div class="app-name" data-showif="mode==app">
+    <span>App</span>
+    <input type="text" data-k="appName" style="width:110px;padding:4px 8px;font-size:12px;font-family:var(--mono)">
+  </div>
+  <div class="hfill"></div>
+</header>
+
+<div class="body" data-view="controls">
+
+<!-- ════════════════ CONTROLS ════════════════ -->
+<div class="controls">
+
+<!-- VERBINDUNG -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#3ecf7a22;color:var(--green)">V</span>
+    <span class="sec-title">Verbindung</span>
+  </div>
+  <div class="sec-body">
+    <div>
+      <div class="field-label">Senden über</div>
+      <div class="btn-group">
+        <button class="seg" data-k="transport" data-v="http">Direkt (HTTP)</button>
+        <button class="seg" data-k="transport" data-v="ha">Home Assistant (MQTT)</button>
+      </div>
+    </div>
+    <div data-showif="transport==http">
+      <div class="field-label">Display-IP</div>
+      <div class="inline">
+        <input type="text" data-k="ip" placeholder="192.168.x.x" style="font-family:var(--mono)">
+        <button class="btn btn-ghost btn-sm" data-act="ping">Ping</button>
+      </div>
+    </div>
+    <div>
+      <div class="field-label">MQTT-Topic-Präfix</div>
+      <input type="text" data-k="prefix" placeholder="Display" style="font-family:var(--mono)">
+    </div>
+    <div class="hint" data-showif="transport==ha">Sendet per <code>mqtt.publish</code> über deine Home-Assistant-Instanz – funktioniert auch bei HTTPS und ohne CORS-Probleme. Nur im HA-Panel verfügbar.</div>
+    <div class="hint" data-showif="transport==http">Direkter Browser-Zugriff auf das Display. Bei HTTPS-Seiten blockiert der Browser das (Mixed Content) – dann „Home Assistant (MQTT)“ wählen.</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#5b8cff22;color:var(--accent)">T</span>
+    <span class="sec-title">Inhalt</span>
+  </div>
+  <div class="sec-body">
+    <div>
+      <div class="field-label">Text</div>
+      <textarea data-k="text" rows="2" placeholder="Hallo AWTRIX NG!"></textarea>
+    </div>
+    <div class="row2">
+      <div>
+        <div class="field-label">Icon-ID</div>
+        <input type="text" data-k="icon" placeholder="z.B. 44893">
+      </div>
+      <div>
+        <div class="field-label">Icon-Modus</div>
+        <div class="btn-group">
+          <button class="seg" data-k="imode" data-v="fixed">Fix</button>
+          <button class="seg" data-k="imode" data-v="push">Push</button>
+          <button class="seg" data-k="imode" data-v="pushOnce">Once</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEXT COLOR -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#ff555522;color:#ff8888">A</span>
+    <span class="sec-title">Textfarbe</span>
+  </div>
+  <div class="sec-body">
+    <div class="tabs">
+      <button class="tab" data-k="tcMode" data-v="solid">Einfarbig</button>
+      <button class="tab" data-k="tcMode" data-v="palette">Palette</button>
+      <button class="tab" data-k="tcMode" data-v="gradient">Verlauf</button>
+    </div>
+
+    <div class="tab-pane" data-showif="tcMode==solid">
+      <div class="swatches" data-swatches="tcColor" data-set="text"></div>
+      <div class="inline">
+        <div class="field-label" style="margin:0">Hex</div>
+        <input type="text" class="color-hex" data-k="tcColor" data-hex maxlength="7">
+        <div class="prev-box" data-prev="tcColor"></div>
+      </div>
+      <div>
+        <div class="field-label">Animation</div>
+        <div class="btn-group">
+          <button class="seg" data-k="animMode" data-v="none">Keine</button>
+          <button class="seg" data-k="animMode" data-v="blink">Blink</button>
+          <button class="seg" data-k="animMode" data-v="fade">Fade</button>
+        </div>
+      </div>
+      <div data-showif="animMode!=none">
+        <div class="field-label">Periode</div>
+        <div class="slider-row">
+          <input type="range" data-k="animMs" data-fmt="ms" min="100" max="3000" step="100">
+          <span class="val-badge" data-badge="animMs"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" data-showif="tcMode==palette">
+      <div class="palette-grid">
+        <button class="pal-btn" data-k="palette" data-v="Rainbow"><div class="pal-bar pg-rainbow"></div><span class="pal-name">Rainbow</span></button>
+        <button class="pal-btn" data-k="palette" data-v="Heat"><div class="pal-bar pg-heat"></div><span class="pal-name">Heat</span></button>
+        <button class="pal-btn" data-k="palette" data-v="Ocean"><div class="pal-bar pg-ocean"></div><span class="pal-name">Ocean</span></button>
+        <button class="pal-btn" data-k="palette" data-v="Forest"><div class="pal-bar pg-forest"></div><span class="pal-name">Forest</span></button>
+        <button class="pal-btn" data-k="palette" data-v="Lava"><div class="pal-bar pg-lava"></div><span class="pal-name">Lava</span></button>
+        <button class="pal-btn" data-k="palette" data-v="Cloud"><div class="pal-bar pg-cloud"></div><span class="pal-name">Cloud</span></button>
+        <button class="pal-btn" data-k="palette" data-v="Party"><div class="pal-bar pg-party"></div><span class="pal-name">Party</span></button>
+        <button class="pal-btn" data-k="palette" data-v="Stripe"><div class="pal-bar pg-stripe"></div><span class="pal-name">Stripe</span></button>
+      </div>
+      <div>
+        <div class="field-label">Geschwindigkeit (paletteSpeed)</div>
+        <div class="slider-row">
+          <input type="range" data-k="palSpeed" data-fmt="num" min="0" max="5" step="0.5">
+          <span class="val-badge" data-badge="palSpeed"></span>
+        </div>
+      </div>
+      <div>
+        <div class="field-label">Breite (paletteSpan, 0 = ganz gestreckt)</div>
+        <div class="slider-row">
+          <input type="range" data-k="palSpan" data-fmt="num" min="0" max="32" step="1">
+          <span class="val-badge" data-badge="palSpan"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" data-showif="tcMode==gradient">
+      <div class="field-label">Farbstops (2–4)</div>
+      <div id="grad-stops" class="grad-stops"></div>
+      <div class="inline">
+        <button class="btn btn-ghost btn-sm" data-act="addStop">+ Stop</button>
+        <button class="btn btn-ghost btn-sm" data-act="delStop">− Stop</button>
+      </div>
+      <div class="hint">Der Verlauf wird als Palette-Array gesendet.</div>
+    </div>
+  </div>
+</div>
+
+<!-- BG COLOR -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#ffaa4422;color:var(--orange)">B</span>
+    <span class="sec-title">Hintergrund</span>
+  </div>
+  <div class="sec-body">
+    <div class="toggle-row">
+      <span>Hintergrundfarbe aktivieren</span>
+      <div class="toggle" data-k="bgEnabled"></div>
+    </div>
+    <div data-showif="bgEnabled==true" style="display:flex;flex-direction:column;gap:10px">
+      <div class="swatches" data-swatches="bgColor" data-set="bg"></div>
+      <div class="inline">
+        <div class="field-label" style="margin:0">Hex</div>
+        <input type="text" class="color-hex" data-k="bgColor" data-hex maxlength="7">
+        <div class="prev-box" data-prev="bgColor"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EFFECTS & OVERLAYS -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#ff994422;color:#ffcc44">E</span>
+    <span class="sec-title">Effekte &amp; Overlay</span>
+  </div>
+  <div class="sec-body">
+    <div>
+      <div class="field-label">Weather Overlay – liegt über allem</div>
+      <div class="ov-grid">
+        <button class="ov-btn ov-none" data-k="overlay" data-v=""><span class="oi">&#8722;</span>Keiner</button>
+        <button class="ov-btn" data-k="overlay" data-v="rain"><span class="oi">&#127783;</span>Rain</button>
+        <button class="ov-btn" data-k="overlay" data-v="drizzle"><span class="oi">&#127746;</span>Drizzle</button>
+        <button class="ov-btn" data-k="overlay" data-v="snow"><span class="oi">&#10052;</span>Snow</button>
+        <button class="ov-btn" data-k="overlay" data-v="storm"><span class="oi">&#127785;</span>Storm</button>
+        <button class="ov-btn" data-k="overlay" data-v="thunder"><span class="oi">&#9928;</span>Thunder</button>
+        <button class="ov-btn" data-k="overlay" data-v="frost"><span class="oi">&#129398;</span>Frost</button>
+      </div>
+    </div>
+    <div>
+      <div class="field-label">Background Effect – 19 Animationen</div>
+      <div class="effect-grid">
+        <button class="eff-btn" data-k="effect" data-v=""><span class="ei">&#8722;</span>Kein</button>
+        <button class="eff-btn" data-k="effect" data-v="Plasma"><span class="ei">&#9889;</span>Plasma</button>
+        <button class="eff-btn" data-k="effect" data-v="PlasmaCloud"><span class="ei">&#9928;</span>PlasmaCloud</button>
+        <button class="eff-btn" data-k="effect" data-v="Matrix"><span class="ei">&#128187;</span>Matrix</button>
+        <button class="eff-btn" data-k="effect" data-v="Fireworks"><span class="ei">&#127878;</span>Fireworks</button>
+        <button class="eff-btn" data-k="effect" data-v="TwinklingStars"><span class="ei">&#11088;</span>Stars</button>
+        <button class="eff-btn" data-k="effect" data-v="Snake"><span class="ei">&#128027;</span>Snake</button>
+        <button class="eff-btn" data-k="effect" data-v="PingPong"><span class="ei">&#127955;</span>PingPong</button>
+        <button class="eff-btn" data-k="effect" data-v="BrickBreaker"><span class="ei">&#127918;</span>BrickBreaker</button>
+        <button class="eff-btn" data-k="effect" data-v="ColorWaves"><span class="ei">&#127744;</span>ColorWaves</button>
+        <button class="eff-btn" data-k="effect" data-v="Radar"><span class="ei">&#128225;</span>Radar</button>
+        <button class="eff-btn" data-k="effect" data-v="Ripple"><span class="ei">&#128167;</span>Ripple</button>
+        <button class="eff-btn" data-k="effect" data-v="Pacifica"><span class="ei">&#127754;</span>Pacifica</button>
+        <button class="eff-btn" data-k="effect" data-v="LookingEyes"><span class="ei">&#128064;</span>LookingEyes</button>
+        <button class="eff-btn" data-k="effect" data-v="Fade"><span class="ei">&#127774;</span>Fade</button>
+        <button class="eff-btn" data-k="effect" data-v="Checkerboard"><span class="ei">&#9823;</span>Checker</button>
+        <button class="eff-btn" data-k="effect" data-v="SwirlIn"><span class="ei">&#127744;</span>SwirlIn</button>
+        <button class="eff-btn" data-k="effect" data-v="SwirlOut"><span class="ei">&#128260;</span>SwirlOut</button>
+        <button class="eff-btn" data-k="effect" data-v="MovingLine"><span class="ei">&#10145;</span>MovingLine</button>
+        <button class="eff-btn" data-k="effect" data-v="TheaterChase"><span class="ei">&#10024;</span>Theater</button>
+      </div>
+    </div>
+    <div data-showif="effect!=">
+      <div class="field-label">Effect-Geschwindigkeit (effectSpeed 0.1–10)</div>
+      <div class="slider-row">
+        <input type="range" data-k="effectSpeed" data-fmt="x" min="0.1" max="10" step="0.1">
+        <span class="val-badge" data-badge="effectSpeed"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCROLL -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#3ecf7a22;color:var(--green)">S</span>
+    <span class="sec-title">Scroll</span>
+  </div>
+  <div class="sec-body">
+    <div>
+      <div class="field-label">Modus</div>
+      <div class="btn-group">
+        <button class="seg" data-k="scrollMode" data-v="wrap">Wrap</button>
+        <button class="seg" data-k="scrollMode" data-v="bounce">Bounce</button>
+        <button class="seg" data-k="scrollMode" data-v="loop">Loop</button>
+        <button class="seg" data-k="scrollMode" data-v="static">Static</button>
+      </div>
+    </div>
+    <div>
+      <div class="field-label">Geschwindigkeit (% von 21 px/s)</div>
+      <div class="slider-row">
+        <input type="range" data-k="scrollSpeed" data-fmt="pct" min="0" max="200" step="10">
+        <span class="val-badge" data-badge="scrollSpeed"></span>
+      </div>
+    </div>
+    <div data-showif="scrollMode==bounce">
+      <div class="field-label">Pause an Wendepunkten (holdMs)</div>
+      <div class="slider-row">
+        <input type="range" data-k="holdMs" data-fmt="ms" min="0" max="3000" step="100">
+        <span class="val-badge" data-badge="holdMs"></span>
+      </div>
+    </div>
+    <div data-showif="scrollMode==loop">
+      <div class="field-label">Abstand zwischen Wiederholungen (gap)</div>
+      <div class="slider-row">
+        <input type="range" data-k="scrollGap" data-fmt="px" min="0" max="32" step="2">
+        <span class="val-badge" data-badge="scrollGap"></span>
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <div class="field-label">Richtung</div>
+        <div class="btn-group">
+          <button class="seg" data-k="direction" data-v="left">Links</button>
+          <button class="seg" data-k="direction" data-v="right">Rechts</button>
+        </div>
+      </div>
+      <div>
+        <div class="field-label">Eintritt</div>
+        <div class="btn-group">
+          <button class="seg" data-k="entry" data-v="inline">Inline</button>
+          <button class="seg" data-k="entry" data-v="offscreen">Außen</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="field-label">Kurzer Text (passt aufs Display)</div>
+      <div class="btn-group">
+        <button class="seg" data-k="whenFits" data-v="static">Statisch</button>
+        <button class="seg" data-k="whenFits" data-v="scroll">Scrollen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STYLE -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#9C27B022;color:#c060e0">D</span>
+    <span class="sec-title">Darstellung</span>
+  </div>
+  <div class="sec-body">
+    <div class="row2">
+      <div>
+        <div class="field-label">Schriftgröße</div>
+        <div class="btn-group">
+          <button class="seg" data-k="font" data-v="small">Small</button>
+          <button class="seg" data-k="font" data-v="large">Large</button>
+        </div>
+      </div>
+      <div>
+        <div class="field-label">Schreibweise</div>
+        <div class="btn-group">
+          <button class="seg" data-k="textCase" data-v="inherit">GROSS</button>
+          <button class="seg" data-k="textCase" data-v="asTyped">asTyped</button>
+        </div>
+      </div>
+    </div>
+    <div class="toggle-row">
+      <span>Text vor Grafik (textInFront)</span>
+      <div class="toggle" data-k="textInFront"></div>
+    </div>
+    <div class="toggle-row">
+      <span>Text zentrieren (textCenter)</span>
+      <div class="toggle" data-k="textCenter"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS & CHART -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#00BCD422;color:#00BCD4">F</span>
+    <span class="sec-title">Fortschritt &amp; Diagramm</span>
+  </div>
+  <div class="sec-body collapsed">
+    <div class="toggle-row">
+      <span>Fortschrittsbalken (progress)</span>
+      <div class="toggle" data-k="progressOn"></div>
+    </div>
+    <div data-showif="progressOn==true" style="display:flex;flex-direction:column;gap:10px">
+      <div class="slider-row">
+        <input type="range" data-k="progress" data-fmt="pct" min="0" max="100" step="1">
+        <span class="val-badge" data-badge="progress"></span>
+      </div>
+      <div class="row2">
+        <div>
+          <div class="field-label">Balkenfarbe</div>
+          <input type="color" data-k="progressColor">
+        </div>
+        <div>
+          <div class="field-label">Hintergrund (Track)</div>
+          <input type="color" data-k="progressTrackColor">
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="field-label">Diagramm</div>
+      <div class="btn-group">
+        <button class="seg" data-k="chartType" data-v="none">Keins</button>
+        <button class="seg" data-k="chartType" data-v="bar">Balken</button>
+        <button class="seg" data-k="chartType" data-v="line">Linie</button>
+      </div>
+    </div>
+    <div data-showif="chartType!=none" style="display:flex;flex-direction:column;gap:10px">
+      <div>
+        <div class="field-label">Werte (Komma-getrennt)</div>
+        <input type="text" data-k="chartData" placeholder="1,4,2,7,5,8" style="font-family:var(--mono)">
+      </div>
+      <div class="inline">
+        <div class="field-label" style="margin:0">Farbe</div>
+        <input type="color" data-k="chartColor">
+        <div class="toggle-row" style="flex:1;margin-left:8px">
+          <span>Autoscale</span>
+          <div class="toggle" data-k="chartAutoscale"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOUND -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#E91E6322;color:#E91E63">♪</span>
+    <span class="sec-title">Sound</span>
+  </div>
+  <div class="sec-body collapsed">
+    <div>
+      <div class="field-label">Sound-Name (Datei auf dem Display)</div>
+      <input type="text" data-k="sound" placeholder="z.B. alarm">
+    </div>
+    <div>
+      <div class="field-label">RTTTL-Melodie (soundRtttl)</div>
+      <textarea data-k="soundRtttl" rows="2" placeholder="name:d=4,o=5,b=140:c,e,g" style="font-family:var(--mono);font-size:12px"></textarea>
+    </div>
+    <div class="toggle-row">
+      <span>Sound wiederholen (soundLoop)</span>
+      <div class="toggle" data-k="soundLoop"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMING -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#ff994422;color:var(--orange)">⏱</span>
+    <span class="sec-title">Timing</span>
+  </div>
+  <div class="sec-body">
+    <div class="row2">
+      <div>
+        <div class="field-label">Dauer (ms, 0 = Standard)</div>
+        <input type="number" data-k="dur" min="0" step="1000">
+      </div>
+      <div>
+        <div class="field-label">Wiederholungen</div>
+        <input type="number" data-k="rep" min="0" step="1">
+      </div>
+    </div>
+    <div data-showif="mode==app">
+      <div class="field-label">Lifetime (ms, App löschen wenn nicht refreshed)</div>
+      <input type="number" data-k="lt" min="0" step="5000">
+    </div>
+    <div data-showif="mode==notify" style="display:flex;flex-direction:column;gap:8px">
+      <div class="toggle-row">
+        <span>Hold (Notification halten)</span>
+        <div class="toggle" data-k="hold"></div>
+      </div>
+      <div class="toggle-row">
+        <span>Stack (zu Queue hinzufügen)</span>
+        <div class="toggle" data-k="stack"></div>
+      </div>
+      <div>
+        <div class="field-label">Notification-Name (für gezieltes Dismiss)</div>
+        <input type="text" data-k="notifName" placeholder="z.B. kellertuer">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRESETS -->
+<div class="section">
+  <div class="sec-head">
+    <span class="sec-icon" style="background:#ffd06022;color:var(--yellow)">★</span>
+    <span class="sec-title">Presets</span>
+  </div>
+  <div class="sec-body collapsed">
+    <div class="inline">
+      <input type="text" id="preset-name" placeholder="Name, z.B. Waschmaschine fertig">
+      <button class="btn btn-primary btn-sm" data-act="savePreset">Speichern</button>
+    </div>
+    <div class="preset-list" id="preset-list"></div>
+    <div>
+      <div class="field-label">Import / Export (JSON)</div>
+      <textarea id="preset-io" rows="3" placeholder="Export fügt hier alle Presets ein – zum Import JSON einfügen" style="font-family:var(--mono);font-size:11px"></textarea>
+    </div>
+    <div class="mig-btns">
+      <button class="btn btn-ghost btn-sm" data-act="exportPresets">Exportieren</button>
+      <button class="btn btn-ghost btn-sm" data-act="importPresets">Importieren</button>
+      <button class="btn btn-danger btn-sm" data-act="resetAll">Alles zurücksetzen</button>
+    </div>
+    <div class="hint">Presets werden nur in diesem Browser gespeichert.</div>
+  </div>
+</div>
+
+</div><!-- /controls -->
+
+<!-- ════════════════ OUTPUT ════════════════ -->
+<div class="output">
+
+  <div class="preview-panel">
+    <div class="preview-label">Vorschau</div>
+    <div class="led-display" id="led-display">
+      <div id="led-icon" class="led-icon hide"></div>
+      <div class="led-wrap" id="led-wrap">
+        <div class="led-scroll" id="led-scroll"><span id="led-text" class="led-text"></span></div>
+      </div>
+      <div class="led-progress hide" id="led-progress"></div>
+      <canvas id="ov-canvas"></canvas>
+    </div>
+  </div>
+
+  <div class="output-tabs">
+    <button class="otab" data-k="otab" data-v="json">JSON Payload</button>
+    <button class="otab" data-k="otab" data-v="yaml">YAML (HA)</button>
+    <button class="otab" data-k="otab" data-v="mig">&#8644; Migrator</button>
+  </div>
+
+  <div class="out-panes">
+    <div class="out-pane" data-showif="otab==json"><pre class="code-out" id="json-out"></pre></div>
+    <div class="out-pane" data-showif="otab==yaml"><pre class="code-out" id="yaml-out"></pre></div>
+    <div class="out-pane" data-showif="otab==mig">
+      <div class="mig-wrap">
+        <div class="mig-info">&#8644; AWTRIX-3-Payload (JSON oder HA-YAML mit <code>payload:</code>) einfügen → live in AWTRIX NG umschreiben → kopieren, in den Builder laden oder senden</div>
+
+        <div class="mig-opts">
+          <span>Typ:</span>
+          <div class="btn-group">
+            <button class="seg" data-k="migMode" data-v="notify">Notification</button>
+            <button class="seg" data-k="migMode" data-v="app">Custom App</button>
+          </div>
+          <div class="inline" data-showif="migMode==app">
+            <span style="font-size:11px;color:var(--muted)">App-Name</span>
+            <input type="text" data-k="migAppName" style="width:110px;padding:4px 8px;font-size:12px;font-family:var(--mono)">
+          </div>
+          <div class="toggle-row" style="gap:8px">
+            <span style="font-size:11px;color:var(--muted)">Unbekannte Keys entfernen</span>
+            <div class="toggle" data-k="migDrop"></div>
+          </div>
+        </div>
+
+        <div class="mig-cols">
+          <div class="mig-col">
+            <div class="mig-label">&#9654; AWTRIX 3 Payload</div>
+            <textarea class="mig-ta" id="mig-input" placeholder='{&#10;  "text": "Hallo Welt",&#10;  "color": [255, 0, 0],&#10;  "duration": 10,&#10;  "pushIcon": 2,&#10;  "rainbow": false&#10;}'></textarea>
+            <div class="mig-btns">
+              <button class="btn btn-ghost btn-sm" data-act="migExample">Beispiel laden</button>
+              <button class="btn btn-ghost btn-sm" data-act="migClear">Leeren</button>
+            </div>
+          </div>
+          <div class="mig-arrow">&#10142;</div>
+          <div class="mig-col">
+            <div class="mig-label">&#9654; AWTRIX NG Payload</div>
+            <pre class="mig-result" id="mig-output"></pre>
+            <div class="mig-btns">
+              <button class="btn btn-primary btn-sm" data-act="migCopy">&#128203; Kopieren</button>
+              <button class="btn btn-ghost btn-sm" data-act="migToBuilder">&#8686; In Builder</button>
+              <button class="btn btn-ghost btn-sm" data-act="migSend">&#9654; Senden</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="mig-changes-wrap" class="hide">
+          <div class="changes-label">&Auml;nderungen</div>
+          <div class="changes-box" id="mig-changes"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <div id="status-dot" class="status-dot"></div>
+    <span id="status-msg" class="status-msg">—</span>
+    <button class="btn btn-primary" data-act="send">&#9654; Senden</button>
+    <button class="btn btn-ghost" data-act="copyJSON">&#128203; JSON</button>
+    <button class="btn btn-ghost" data-act="copyYAML">&#128203; YAML</button>
+    <button class="btn btn-danger" data-act="dismiss">Dismiss</button>
+  </div>
+
+</div><!-- /output -->
+</div><!-- /body -->
+
+<nav class="mnav">
+  <button data-k="view" data-v="controls">&#9881; Einstellungen</button>
+  <button data-k="view" data-v="output">&#128065; Ausgabe</button>
+</nav>
+</div><!-- /app -->
+
+<div id="toast"></div>
+
+<script src="migrator.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
